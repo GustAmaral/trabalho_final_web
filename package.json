@@ -1,0 +1,36 @@
+{
+  "name": "trabalho_final_web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  "dev": "npx nodemon src/server.ts --watch 'src/' -e ts",
+  "compile": "npx tsc",
+  "start": "node ./dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GustAmaral/trabalho_final_web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GustAmaral/trabalho_final_web/issues"
+  },
+  "homepage": "https://github.com/GustAmaral/trabalho_final_web#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/morgan": "^1.9.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
