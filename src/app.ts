@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import path from 'path';
 import { ingredienteRoutes } from './routes/ingredienteRoutes';
 import { produtoRoutes } from './routes/produtoRoutes';
+import { pedidoRoutes } from './routes/pedidoRoutes';
  
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 // Rotas
 app.use('/api/ingredientes', ingredienteRoutes);
 app.use('/api/produtos', produtoRoutes);
+app.use('/api/pedidos', pedidoRoutes);
 
 // Servir arquivos estáticos
 app.use(express.static(path.join(__dirname, '../public')));
