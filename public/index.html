@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< Updated upstream
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     
     <link rel="stylesheet" href="stylesheet/style.css">
@@ -16,5 +17,174 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+=======
+    <title>GastroFlow - Sistema de gerenciamento para sua cozinha</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #d35400;
+            --secondary-color: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--primary-color) !important;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1556910103-1c02745a30bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .btn-cta {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            font-weight: bold;
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        .btn-cta:hover {
+            background-color: #e67e22;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fs-3" href="#">
+                <i class="bi bi-fire"></i> GastroFlow
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="#funcionalidades">Funcionalidades</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
+                    <li class="nav-item ms-3">
+                        <a href="/login" class="btn btn-outline-dark btn-sm">Acessar Sistema</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-3 fw-bold mb-4">Organize sua Cozinha com Eficiência</h1>
+                    <p class="lead mb-5">
+                        O Sistema de Gestão de Pedidos projetado para otimizar o fluxo de trabalho profissional.
+                        Do recebimento à entrega, tenha controle total da sua operação.
+                    </p>
+                    <a href="#funcionalidades" class="btn btn-cta rounded-pill">Conheça o Sistema</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="funcionalidades" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Funcionalidades Principais</h2>
+                <p class="text-muted">Tudo o que a equipe do GastroFlow precisa para focar na qualidade dos pratos.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4 text-center">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <div class="card-body">
+                            <i class="bi bi-kanban feature-icon"></i>
+                            <h4 class="card-title">Kanban de Pedidos</h4>
+                            <p class="card-text">
+                                Visualização clara e imediata. Acompanhe os status: 
+                                <strong>Recebido, Em Preparo e Pronto</strong> em tempo real.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <div class="card-body">
+                            <i class="bi bi-journal-text feature-icon"></i>
+                            <h4 class="card-title">Cardápio Digital</h4>
+                            <p class="card-text">
+                                Cadastre pratos e bebidas com facilidade. Gerencie descrições, preços e itens disponíveis de forma ágil.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <div class="card-body">
+                            <i class="bi bi-basket feature-icon"></i>
+                            <h4 class="card-title">Controle de Ingredientes</h4>
+                            <p class="card-text">
+                                Vincule ingredientes aos pratos e mantenha o controle dos insumos necessários para cada preparação.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2 class="fw-bold mb-3">Sobre o GastroFlow</h2>
+                    <p>
+                        O GastroFlow é uma aplicação web projetada para simular a operação de uma cozinha profissional fictícia.
+                        Nosso objetivo é garantir que a equipe visualize e gerencie todos os pedidos com agilidade.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center">
+                   <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" alt="Chef Icon" class="img-fluid" style="max-width: 300px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center">
+        <div class="container">
+            <p class="mb-1">&copy; 2025 GastroFlow - Sistema de Gestão de Pedidos</p>
+            <small class="text-secondary">Desenvolvido por Gustavo Henrique e Vinícius Zopelar</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+>>>>>>> Stashed changes
 </body>
 </html>
