@@ -2,7 +2,9 @@
 <html lang="pt-br">
 	<head>
 		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Cardápio - GastroFlow</title>
+        <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/style.css" />
 		<link
@@ -15,18 +17,26 @@
 		<script src="js/cardapio.js" defer></script>
 	</head>
 	<body class="bg-light">
-		<nav class="navbar navbar-light bg-white shadow-sm mb-4">
-			<div class="container-fluid px-4">
-				<a class="navbar-brand fw-bold" href="#">GastroFlow</a>
-				<div class="d-flex gap-2">
-					<a href="admin.html" class="btn btn-outline-secondary btn-sm"
-						><i class="bi bi-arrow-left"></i> Voltar</a
+		<header
+			class="navbar navbar-expand-lg navbar-white bg-white border-bottom py-3 px-4"
+		>
+			<div class="container-fluid">
+				<a class="navbar-brand fw-bold fs-4" href="#">
+					<i class="bi bi-fire text-warning"></i> GastroFlow
+					<span class="fs-6 text-muted fw-normal">| Cardápio</span></a
+				>
+				<div class="d-flex align-items-center gap-2">
+					<a
+						href="admin.html"
+						class="btn btn-outline-secondary btn-sm fw-bold px-3"
 					>
+						<i class="bi bi-arrow-left"></i> Voltar
+					</a>
 				</div>
 			</div>
-		</nav>
+		</header>
 
-		<div class="container-fluid px-4">
+		<div class="container-fluid px-4 mt-4">
 			<div class="mb-4">
 				<button
 					class="btn btn-dark fw-bold px-4 py-2"

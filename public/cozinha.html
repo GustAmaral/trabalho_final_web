@@ -4,6 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Cozinha - GastroFlow</title>
+		<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/style.css" />
 		<link
@@ -16,26 +17,42 @@
 		<script src="js/cozinha.js" defer></script>
 	</head>
 	<body class="bg-light">
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-			<div class="container-fluid px-4">
-				<a class="navbar-brand fw-bold" href="#"> GastroFlow Cozinha </a>
-				<div class="d-flex align-items-center">
-					<span class="text-white me-3 small" id="user-name-display"
+		<header
+			class="navbar navbar-expand-lg navbar-white bg-white border-bottom py-3 px-4 fixed-top"
+		>
+			<div class="container-fluid">
+				<a class="navbar-brand fw-bold fs-4" href="#">
+					<i class="bi bi-fire text-warning"></i> GastroFlow
+					<span class="fs-6 text-muted fw-normal">| Cozinha</span>
+				</a>
+
+				<div class="d-flex align-items-center gap-3">
+					<span
+						class="text-secondary small d-none d-md-block"
+						id="user-name-display"
 						>Cozinheiro</span
 					>
+
 					<a
 						id="btn-voltar-admin"
 						href="admin.html"
-						class="btn btn-outline-light btn-sm me-2 d-none"
+						class="btn btn-outline-dark btn-sm fw-bold px-3 d-none"
 					>
-						<i class="bi bi-grid-fill"></i> Painel Admin
+						<i class="bi bi-grid-fill"></i>
+						<span class="d-none d-sm-inline">Painel Admin</span>
 					</a>
-					<button id="btn-logout" class="btn btn-outline-light btn-sm">
+
+					<button
+						id="btn-logout"
+						class="btn btn-dark btn-sm fw-bold px-3 shadow-sm"
+					>
 						Sair
 					</button>
 				</div>
 			</div>
-		</nav>
+		</header>
+
+		<div style="margin-top: 80px"></div>
 
 		<div class="container-fluid py-4 px-4">
 			<div
