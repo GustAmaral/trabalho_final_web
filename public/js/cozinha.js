@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-	const API_URL = "/api/pedidos";
-
 	// Configura o botão de sair
 	document.getElementById("btn-logout").addEventListener("click", () => {
 		localStorage.removeItem("token");
@@ -18,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Inicia o ciclo de atualização
 	carregarPedidos();
-	setInterval(carregarPedidos, 5000); // Atualiza a cada 5 segundos (Polling)
+	setInterval(carregarPedidos, 5000); // Atualiza a cada 5 segundos
 });
 
 async function carregarPedidos() {
@@ -31,7 +29,7 @@ async function carregarPedidos() {
 		});
 
 		if (response.status === 401) {
-			window.location.href = "login.html"; // Token expirou
+			window.location.href = "login.html";
 			return;
 		}
 
@@ -43,121 +41,166 @@ async function carregarPedidos() {
 }
 
 function renderizarKanban(pedidos) {
-	// Limpa as colunas antes de redesenhar (para não duplicar)
+	// Mapeamento das colunas do HTML (certifique-se que o HTML está atualizado com os IDs corretos)
+	// Se estiver usando o HTML antigo, os IDs podem ser diferentes.
+	// O ideal é usar o HTML atualizado que passei na resposta anterior.
 	const colunas = {
-		Recebido: document.getElementById("coluna-recebido"),
-		"Em Preparo": document.getElementById("coluna-preparo"),
-		Pronto: document.getElementById("coluna-pronto"),
-		Entregue: document.getElementById("coluna-entregue"),
+		recebido: document.getElementById("coluna-recebido"), // Coluna 1: A preparar
+		pronto: document.getElementById("coluna-preparo"), // Coluna 2: Pronto
+		concluido: document.getElementById("coluna-pronto"), // Coluna 3: Concluído
 	};
 
 	const contadores = {
-		Recebido: document.getElementById("count-recebido"),
-		"Em Preparo": document.getElementById("count-preparo"),
-		Pronto: document.getElementById("count-pronto"),
+		recebido: document.getElementById("count-recebido"),
+		pronto: document.getElementById("count-preparo"),
+		concluido: document.getElementById("count-pronto"),
 	};
 
-	// Zera HTML das colunas
+	// Limpa colunas
 	Object.values(colunas).forEach((col) => {
 		if (col) col.innerHTML = "";
 	});
 
-	// Itera sobre os pedidos e cria os cards
-	pedidos.forEach((pedido) => {
-		const card = criarCardPedido(pedido);
+	let counts = { recebido: 0, pronto: 0, concluido: 0 };
 
-		if (colunas[pedido.status]) {
-			colunas[pedido.status].appendChild(card);
+	pedidos.forEach((pedido) => {
+		let destino = "";
+
+		// Regra de Negócio Visual:
+		// 'Recebido' e 'Em Preparo' ficam na primeira coluna ("A preparar")
+		if (pedido.status === "Recebido" || pedido.status === "Em Preparo") {
+			destino = "recebido";
+			counts.recebido++;
+		} else if (pedido.status === "Pronto") {
+			destino = "pronto";
+			counts.pronto++;
+		} else if (pedido.status === "Entregue") {
+			destino = "concluido";
+			counts.concluido++;
+		}
+
+		if (colunas[destino]) {
+			colunas[destino].appendChild(criarCardPedido(pedido));
 		}
 	});
 
-	// Atualiza contadores (Badges)
-	Object.keys(contadores).forEach((status) => {
-		const count = pedidos.filter((p) => p.status === status).length;
-		if (contadores[status]) contadores[status].textContent = count;
-	});
+	// Atualiza os contadores
+	if (contadores.recebido) contadores.recebido.textContent = counts.recebido;
+	if (contadores.pronto) contadores.pronto.textContent = counts.pronto;
+	if (contadores.concluido) contadores.concluido.textContent = counts.concluido;
 }
 
 function criarCardPedido(pedido) {
-	const cardDiv = document.createElement("div");
-	cardDiv.className = "card mb-3 border-0 shadow-sm pedido-card fade-in";
+    const cardDiv = document.createElement('div');
+    // Adiciona classes para estilização
+    cardDiv.className = 'card kanban-card mb-3 p-3';
 
-	// Define a cor da borda lateral baseada no status
-	let borderClass = "border-start border-4 ";
-	let btnAcao = "";
+    // 1. Definição de Estilos baseada no Status
+    let badgeClass = '';
+    let badgeText = '';
+    let btnTexto = '';
+    let proximoStatus = '';
 
-	if (pedido.status === "Recebido") {
-		borderClass += "border-danger";
-		// Botão para mover para "Em Preparo"
-		btnAcao = `<button class="btn btn-sm btn-warning w-100 fw-bold mt-2 btn-mudar-status" data-id="${pedido.id}" data-status="Em Preparo">
-                    <i class="bi bi-fire"></i> Iniciar Preparo
-                   </button>`;
-	} else if (pedido.status === "Em Preparo") {
-		borderClass += "border-warning";
-		// Botão para mover para "Pronto"
-		btnAcao = `<button class="btn btn-sm btn-success w-100 fw-bold mt-2 btn-mudar-status" data-id="${pedido.id}" data-status="Pronto">
-                    <i class="bi bi-check-lg"></i> Marcar Pronto
-                   </button>`;
-	} else if (pedido.status === "Pronto") {
-		borderClass += "border-success";
-		// Botão para finalizar (Entregue)
-		btnAcao = `<button class="btn btn-sm btn-outline-secondary w-100 mt-2 btn-mudar-status" data-id="${pedido.id}" data-status="Entregue">
-                    <i class="bi bi-box-seam"></i> Finalizar
-                   </button>`;
-	} else {
-		borderClass += "border-secondary"; // Entregue
-	}
+    if (pedido.status === 'Recebido') {
+        badgeClass = 'badge-preparar';
+        badgeText = 'A preparar';
+        btnTexto = 'Iniciar Preparo';
+        proximoStatus = 'Em Preparo';
+    } else if (pedido.status === 'Em Preparo') {
+        badgeClass = 'badge-preparar';
+        badgeText = 'Em andamento';
+        btnTexto = 'Marcar Pronto';
+        proximoStatus = 'Pronto';
+    } else if (pedido.status === 'Pronto') {
+        badgeClass = 'badge-pronto';
+        badgeText = 'Pronto';
+        btnTexto = 'Finalizar';
+        proximoStatus = 'Entregue';
+    } else { // Entregue
+        badgeClass = 'badge-concluido';
+        badgeText = 'Concluído';
+        btnTexto = ''; 
+    }
 
-	cardDiv.classList.add(borderClass);
+    // 2. Cálculo do Tempo
+    const minutos = calcularTempo(pedido);
 
-	// Formata a lista de itens
-	const itensHtml = pedido.itens
-		.map(
-			(item) =>
-				`<li class="list-group-item d-flex justify-content-between align-items-center px-0 py-1 border-0">
-            <span><strong class="text-primary-gastro">${item.quantidade}x</strong> ${item.nome_produto}</span>
-        </li>`
-		)
-		.join("");
-
-	// Monta o HTML interno do Card
-	cardDiv.innerHTML = `
-        <div class="card-body p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="card-title fw-bold mb-0">Mesa ${
-									pedido.numero_mesa
-								}</h6>
-                <small class="text-muted"><i class="bi bi-clock"></i> ${formatarHora(
-									pedido.data_hora_criacao
-								)}</small>
-            </div>
-            
-            ${
-							pedido.observacao
-								? `<div class="alert alert-warning py-1 px-2 mb-2 small"><i class="bi bi-exclamation-circle"></i> ${pedido.observacao}</div>`
-								: ""
-						}
-            
-            <ul class="list-group list-group-flush mb-2 small">
-                ${itensHtml}
-            </ul>
-
-            ${btnAcao}
+    // 3. Montagem da Lista de Itens
+    const itensHtml = pedido.itens.map(item => `
+        <div class="item-lista">
+            <span class="item-qtd fw-bold text-secondary">${item.quantidade}x</span>
+            ${item.nome_produto}
         </div>
+    `).join('');
+
+    const clockIconSvg = `
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
     `;
 
-	// Adiciona o evento de click no botão recém-criado (Solução Segura CSP)
-	const btn = cardDiv.querySelector(".btn-mudar-status");
-	if (btn) {
-		btn.addEventListener("click", () => {
-			atualizarStatusPedido(
-				btn.getAttribute("data-id"),
-				btn.getAttribute("data-status")
-			);
-		});
+    // 4. Montagem do HTML
+    // Usamos classes do Bootstrap (d-flex, align-items-center, gap-1) para imitar o Tailwind (flex, items-center, gap-1)
+    cardDiv.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+                <span class="card-mesa-title h5 fw-bold mb-0 me-2">Mesa ${pedido.numero_mesa}</span>
+            </div>
+            
+            <div class="d-flex align-items-center gap-1 small" style="color: #6b7280;"> ${clockIconSvg}
+                <span style="font-feature-settings: 'tnum'; font-variant-numeric: tabular-nums;">${minutos}'</span>
+            </div>
+        </div>
+
+        <div class="status-badge ${badgeClass} text-center mb-3 py-1 rounded fw-bold small">
+            ${badgeText}
+        </div>
+
+        <div class="mb-3">
+            ${itensHtml}
+            ${pedido.observacao ? `<div class="mt-2 small text-danger fst-italic"><i class="bi bi-exclamation-circle"></i> ${pedido.observacao}</div>` : ''}
+        </div>
+
+        ${btnTexto ? `
+            <button class="btn btn-sm btn-outline-dark w-100 btn-acao" data-id="${pedido.id}" data-status="${proximoStatus}">
+                ${btnTexto}
+            </button>
+        ` : ''}
+    `;
+
+    const btn = cardDiv.querySelector('.btn-acao');
+    if (btn) {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            atualizarStatusPedido(btn.dataset.id, btn.dataset.status);
+        });
+    }
+
+    return cardDiv;
+}
+
+// --- LÓGICA DE TEMPO CORRIGIDA ---
+function calcularTempo(pedido) {
+	if (!pedido.data_hora_criacao) return 0;
+
+	const inicio = new Date(pedido.data_hora_criacao);
+	let fim;
+
+	// Se já foi entregue E o banco retornou a data de finalização, usa ela.
+	// Caso contrário (se o pedido está aberto), usa o momento atual (new Date)
+	if (pedido.status === "Entregue" && pedido.data_hora_finalizacao) {
+		fim = new Date(pedido.data_hora_finalizacao);
+	} else {
+		fim = new Date();
 	}
 
-	return cardDiv;
+	// Diferença em milissegundos
+	let diffMs = fim - inicio;
+
+	// Converte para minutos arredondando para baixo
+	const diffMins = Math.floor(diffMs / 60000);
+
+	return diffMins > 0 ? diffMins : 0;
 }
 
 async function atualizarStatusPedido(id, novoStatus) {
@@ -173,20 +216,11 @@ async function atualizarStatusPedido(id, novoStatus) {
 		});
 
 		if (response.ok) {
-			carregarPedidos(); // Recarrega a tela imediatamente
+			carregarPedidos();
 		} else {
 			alert("Erro ao atualizar status");
 		}
 	} catch (error) {
 		console.error("Erro na requisição:", error);
 	}
-}
-
-function formatarHora(dataString) {
-	if (!dataString) return "";
-	const data = new Date(dataString); // O SQLite salva em UTC geralmente
-	return data.toLocaleTimeString("pt-BR", {
-		hour: "2-digit",
-		minute: "2-digit",
-	});
 }

@@ -13,4 +13,5 @@ export interface Pedido {
     observacao?: string; // ex: "Sem cebola"
     itens: ItemPedido[]; // Array com os produtos pedidos
     data_hora_criacao?: string;
+    data_hora_finalizacao?: string;
 }
