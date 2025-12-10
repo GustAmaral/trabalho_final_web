@@ -21,16 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
 				const data = await response.json();
 
 				if (response.ok) {
-					// SUCESSO!
 					console.log("Login realizado:", data);
 
-					// 1. Salva o Token e os dados do usuário no localStorage
 					localStorage.setItem("token", data.token);
 					localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
-					// 2. Redireciona baseada no cargo (Opcional, mas legal)
-					// Por enquanto vamos mandar todos para a cozinha
-					window.location.href = "cozinha.html";
+					if (data.usuario.cargo === "admin") {
+						// Se for Gerente, vai para o Painel Administrativo
+						window.location.href = "admin.html";
+					} else {
+						// Se for Cozinheiro, vai direto para o Kanban
+						window.location.href = "cozinha.html";
+					}
 				} else {
 					// ERRO (Senha errada, etc)
 					mostrarErro(data.erro || "Falha ao fazer login");
