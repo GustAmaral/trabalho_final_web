@@ -1,12 +1,32 @@
 :root {
+	/* Cores principais da landing page */
 	--primary-color: #d35400;
 	--secondary-color: #2c3e50;
+
+	/* Azul (A preparar) */
+    --kanban-blue-bg: #e3f2fd;
+    --kanban-blue-text: #0d6efd;
+    
+    /* Verde (Pronto) */
+    --kanban-green-bg: #d1e7dd;
+    --kanban-green-text: #0f5132;
+    
+    /* Roxo (Concluído) */
+    --kanban-purple-bg: #f3e5f5;
+    --kanban-purple-text: #6f42c1;
+    
+    /* Cinzas */
+    --text-primary: #343a40;
+    --text-secondary: #6c757d;
+    --bg-main: #f4f6f8; /* Fundo geral da página */
 }
 
 body {
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	background-color: var(--bg-main) !important;
 }
 
+/* --- Estilização da landing page --- */
 .navbar-brand {
 	font-weight: bold;
 	color: var(--primary-color) !important;
@@ -48,4 +68,98 @@ footer {
 	background-color: var(--secondary-color);
 	color: white;
 	padding: 20px 0;
+}
+
+/* --- Estilo dos Cards do Kanban --- */
+.kanban-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: white;
+}
+
+.kanban-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-mesa-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.card-meta-info {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Badges de Status (A barra colorida dentro do card) */
+.status-badge {
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: left;
+    margin-bottom: 12px;
+    border: none;
+}
+
+/* Variações de cor dos badges */
+.badge-preparar {
+    background-color: var(--kanban-blue-bg);
+    color: var(--kanban-blue-text);
+}
+
+.badge-pronto {
+    background-color: var(--kanban-green-bg);
+    color: var(--kanban-green-text);
+}
+
+.badge-concluido {
+    background-color: var(--kanban-purple-bg);
+    color: var(--kanban-purple-text);
+}
+
+/* Lista de Itens */
+.item-lista {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.item-qtd {
+    color: var(--text-secondary);
+    margin-right: 6px;
+}
+
+.item-obs {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+/* Cabeçalhos das Colunas (Pills com contador) */
+.coluna-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.coluna-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-right: 10px;
+    color: var(--text-primary);
+}
+
+.coluna-counter {
+    background-color: #e9ecef;
+    color: var(--text-primary);
+    font-weight: bold;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.9rem;
 }
