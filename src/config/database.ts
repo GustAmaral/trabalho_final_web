@@ -1,33 +1,34 @@
-import sqlite3 from 'sqlite3';
-import { open, Database } from 'sqlite';
+import sqlite3 from "sqlite3";
+import { open, Database } from "sqlite";
 
 // Função para abrir a conexão
 export const getDatabaseConnection = async (): Promise<Database> => {
-    return open({
-        filename: './db/database.db',
-        driver: sqlite3.Database
-    });
+	return open({
+		filename: "./db/database.db",
+		driver: sqlite3.Database,
+	});
 };
 
 // Função para iniciar as tabelas
 export const initializeDatabase = async () => {
-    const db = await getDatabaseConnection();
-    
-    console.log('🏗️  Verificando estrutura do banco de dados...');
+	const db = await getDatabaseConnection();
 
-    // 1. Tabela PRODUTOS_MENU (Cardápio)
-    await db.exec(`
+	console.log("🏗️  Verificando estrutura do banco de dados...");
+
+	// 1. Tabela PRODUTOS_MENU (Cardápio)
+	await db.exec(`
         CREATE TABLE IF NOT EXISTS produtos_menu (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
             descricao TEXT,
             preco REAL NOT NULL,
+            imagem TEXT, -- Nova coluna para URL da foto
             disponivel BOOLEAN DEFAULT 1
         )
     `);
 
-    // 2. Tabela INGREDIENTES
-    await db.exec(`
+	// 2. Tabela INGREDIENTES
+	await db.exec(`
         CREATE TABLE IF NOT EXISTS ingredientes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
@@ -36,8 +37,8 @@ export const initializeDatabase = async () => {
         )
     `);
 
-    // 3. Tabela de Relacionamento PRODUTO <-> INGREDIENTE (N:N)
-    await db.exec(`
+	// 3. Tabela de Relacionamento PRODUTO <-> INGREDIENTE (N:N)
+	await db.exec(`
         CREATE TABLE IF NOT EXISTS produto_ingredientes (
             produto_id INTEGER,
             ingrediente_id INTEGER,
@@ -47,8 +48,8 @@ export const initializeDatabase = async () => {
         )
     `);
 
-    // 4. Tabela PEDIDOS
-    await db.exec(`
+	// 4. Tabela PEDIDOS
+	await db.exec(`
         CREATE TABLE IF NOT EXISTS pedidos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             numero_mesa INTEGER NOT NULL,
@@ -59,8 +60,8 @@ export const initializeDatabase = async () => {
         )
     `);
 
-    // 5. Tabela ITENS_PEDIDO (O que tem no pedido)
-    await db.exec(`
+	// 5. Tabela ITENS_PEDIDO (O que tem no pedido)
+	await db.exec(`
         CREATE TABLE IF NOT EXISTS itens_pedido (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             pedido_id INTEGER NOT NULL,
@@ -72,8 +73,8 @@ export const initializeDatabase = async () => {
         )
     `);
 
-    // 6. Tabela USUARIOS
-    await db.exec(`
+	// 6. Tabela USUARIOS
+	await db.exec(`
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
@@ -83,5 +84,5 @@ export const initializeDatabase = async () => {
         )
     `);
 
-    console.log('✅ Banco de dados pronto!');
+	console.log("✅ Banco de dados pronto!");
 };

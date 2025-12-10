@@ -8,6 +8,7 @@ const controller = new ProdutoController();
 
 router.get('/', controller.listar);
 router.post('/', authMiddleware, isAdminMiddleware, controller.criar);
-// Futuramente: router.put('/:id', controller.editar);
+router.put('/:id', authMiddleware, isAdminMiddleware, controller.atualizar);
+router.delete('/:id', authMiddleware, isAdminMiddleware, controller.deletar);
 
 export { router as produtoRoutes };

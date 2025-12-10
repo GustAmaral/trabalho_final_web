@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.getElementById("btn-logout").addEventListener("click", () => {
 		localStorage.removeItem("token");
 		localStorage.removeItem("usuario");
-		window.location.href = "login.html";
+		window.location.href = "index.html";
 	});
 
 	// Exibe nome do usuário
@@ -12,6 +12,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		document.getElementById(
 			"user-name-display"
 		).textContent = `Olá, ${usuarioLogado.nome}`;
+	}
+
+	// Se o cargo for 'admin', mostra o botão de voltar
+	if (usuarioLogado.cargo === "admin") {
+		const btnAdmin = document.getElementById("btn-voltar-admin");
+		if (btnAdmin) {
+			btnAdmin.classList.remove("d-none"); // Remove a classe que esconde o botão
+		}
 	}
 
 	// Inicia o ciclo de atualização
@@ -91,60 +99,67 @@ function renderizarKanban(pedidos) {
 }
 
 function criarCardPedido(pedido) {
-    const cardDiv = document.createElement('div');
-    // Adiciona classes para estilização
-    cardDiv.className = 'card kanban-card mb-3 p-3';
+	const cardDiv = document.createElement("div");
+	// Adiciona classes para estilização
+	cardDiv.className = "card kanban-card mb-3 p-3";
 
-    // 1. Definição de Estilos baseada no Status
-    let badgeClass = '';
-    let badgeText = '';
-    let btnTexto = '';
-    let proximoStatus = '';
+	// 1. Definição de Estilos baseada no Status
+	let badgeClass = "";
+	let badgeText = "";
+	let btnTexto = "";
+	let proximoStatus = "";
 
-    if (pedido.status === 'Recebido') {
-        badgeClass = 'badge-preparar';
-        badgeText = 'A preparar';
-        btnTexto = 'Iniciar Preparo';
-        proximoStatus = 'Em Preparo';
-    } else if (pedido.status === 'Em Preparo') {
-        badgeClass = 'badge-preparar';
-        badgeText = 'Em andamento';
-        btnTexto = 'Marcar Pronto';
-        proximoStatus = 'Pronto';
-    } else if (pedido.status === 'Pronto') {
-        badgeClass = 'badge-pronto';
-        badgeText = 'Pronto';
-        btnTexto = 'Finalizar';
-        proximoStatus = 'Entregue';
-    } else { // Entregue
-        badgeClass = 'badge-concluido';
-        badgeText = 'Concluído';
-        btnTexto = ''; 
-    }
+	if (pedido.status === "Recebido") {
+		badgeClass = "badge-preparar";
+		badgeText = "A preparar";
+		btnTexto = "Iniciar Preparo";
+		proximoStatus = "Em Preparo";
+	} else if (pedido.status === "Em Preparo") {
+		badgeClass = "badge-preparar";
+		badgeText = "Em andamento";
+		btnTexto = "Marcar Pronto";
+		proximoStatus = "Pronto";
+	} else if (pedido.status === "Pronto") {
+		badgeClass = "badge-pronto";
+		badgeText = "Pronto";
+		btnTexto = "Finalizar";
+		proximoStatus = "Entregue";
+	} else {
+		// Entregue
+		badgeClass = "badge-concluido";
+		badgeText = "Concluído";
+		btnTexto = "";
+	}
 
-    // 2. Cálculo do Tempo
-    const minutos = calcularTempo(pedido);
+	// 2. Cálculo do Tempo
+	const minutos = calcularTempo(pedido);
 
-    // 3. Montagem da Lista de Itens
-    const itensHtml = pedido.itens.map(item => `
+	// 3. Montagem da Lista de Itens
+	const itensHtml = pedido.itens
+		.map(
+			(item) => `
         <div class="item-lista">
             <span class="item-qtd fw-bold text-secondary">${item.quantidade}x</span>
             ${item.nome_produto}
         </div>
-    `).join('');
+    `
+		)
+		.join("");
 
-    const clockIconSvg = `
+	const clockIconSvg = `
         <svg xmlns="http://www.w3.org/2000/svg" style="width: 1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
     `;
 
-    // 4. Montagem do HTML
-    // Usamos classes do Bootstrap (d-flex, align-items-center, gap-1) para imitar o Tailwind (flex, items-center, gap-1)
-    cardDiv.innerHTML = `
+	// 4. Montagem do HTML
+	// Usamos classes do Bootstrap (d-flex, align-items-center, gap-1) para imitar o Tailwind (flex, items-center, gap-1)
+	cardDiv.innerHTML = `
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center">
-                <span class="card-mesa-title h5 fw-bold mb-0 me-2">Mesa ${pedido.numero_mesa}</span>
+                <span class="card-mesa-title h5 fw-bold mb-0 me-2">Mesa ${
+									pedido.numero_mesa
+								}</span>
             </div>
             
             <div class="d-flex align-items-center gap-1 small" style="color: #6b7280;"> ${clockIconSvg}
@@ -158,25 +173,33 @@ function criarCardPedido(pedido) {
 
         <div class="mb-3">
             ${itensHtml}
-            ${pedido.observacao ? `<div class="mt-2 small text-danger fst-italic"><i class="bi bi-exclamation-circle"></i> ${pedido.observacao}</div>` : ''}
+            ${
+							pedido.observacao
+								? `<div class="mt-2 small text-danger fst-italic"><i class="bi bi-exclamation-circle"></i> ${pedido.observacao}</div>`
+								: ""
+						}
         </div>
 
-        ${btnTexto ? `
+        ${
+					btnTexto
+						? `
             <button class="btn btn-sm btn-outline-dark w-100 btn-acao" data-id="${pedido.id}" data-status="${proximoStatus}">
                 ${btnTexto}
             </button>
-        ` : ''}
+        `
+						: ""
+				}
     `;
 
-    const btn = cardDiv.querySelector('.btn-acao');
-    if (btn) {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            atualizarStatusPedido(btn.dataset.id, btn.dataset.status);
-        });
-    }
+	const btn = cardDiv.querySelector(".btn-acao");
+	if (btn) {
+		btn.addEventListener("click", (e) => {
+			e.stopPropagation();
+			atualizarStatusPedido(btn.dataset.id, btn.dataset.status);
+		});
+	}
 
-    return cardDiv;
+	return cardDiv;
 }
 
 // --- LÓGICA DE TEMPO CORRIGIDA ---
