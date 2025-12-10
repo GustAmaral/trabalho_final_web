@@ -1,0 +1,51 @@
+:root {
+	--primary-color: #d35400;
+	--secondary-color: #2c3e50;
+}
+
+body {
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar-brand {
+	font-weight: bold;
+	color: var(--primary-color) !important;
+}
+
+/* Hero Section */
+.hero-section {
+	background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+		url("https://images.unsplash.com/photo-1556910103-1c02745a30bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
+	background-size: cover;
+	background-position: center;
+	color: white;
+	padding: 100px 0;
+	text-align: center;
+}
+
+.btn-cta {
+	background-color: var(--primary-color);
+	color: white;
+	padding: 12px 30px;
+	font-weight: bold;
+	border: none;
+	transition: transform 0.2s;
+}
+
+.btn-cta:hover {
+	background-color: #e67e22;
+	color: white;
+	transform: scale(1.05);
+}
+
+.feature-icon {
+	font-size: 3rem;
+	color: var(--primary-color);
+	margin-bottom: 1rem;
+}
+
+footer {
+	background-color: var(--secondary-color);
+	color: white;
+	padding: 20px 0;
+}

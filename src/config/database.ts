@@ -71,5 +71,16 @@ export const initializeDatabase = async () => {
         )
     `);
 
+    // 6. Tabela USUARIOS
+    await db.exec(`
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            senha TEXT NOT NULL,
+            cargo TEXT DEFAULT 'cozinheiro' -- 'admin' ou 'cozinheiro'
+        )
+    `);
+
     console.log('✅ Banco de dados pronto!');
 };
