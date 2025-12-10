@@ -31,7 +31,8 @@ export const initializeDatabase = async () => {
         CREATE TABLE IF NOT EXISTS ingredientes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
-            unidade_medida TEXT NOT NULL
+            unidade_medida TEXT NOT NULL,
+            quantidade REAL DEFAULT 0
         )
     `);
 
