@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Estoque - GastroFlow</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+		/>
+
+		<script src="js/bootstrap.bundle.min.js"></script>
+		<script src="js/auth-guard.js"></script>
+		<script src="js/estoque.js" defer></script>
+	</head>
+	<body class="bg-light">
+		<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+			<div class="container-fluid px-4">
+				<a class="navbar-brand fw-bold text-dark" href="#">GastroFlow</a>
+				<div class="d-flex align-items-center gap-2">
+					<a href="cozinha.html" class="btn btn-outline-secondary btn-sm"
+						>Ir para Cozinha</a
+					>
+					<button class="btn btn-dark btn-sm">Ações</button>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid px-4">
+			<div class="mb-4">
+				<button
+					class="btn btn-dark fw-bold px-4 py-2"
+					data-bs-toggle="modal"
+					data-bs-target="#modalIngrediente"
+					onclick="limparFormulario()"
+				>
+					Adicionar Ingrediente
+				</button>
+			</div>
+
+			<div id="grid-ingredientes" class="row g-3"></div>
+		</div>
+
+		<div class="modal fade" id="modalIngrediente" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title fw-bold">Gerenciar Ingrediente</h5>
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+						></button>
+					</div>
+					<div class="modal-body">
+						<form id="form-ingrediente">
+							<input type="hidden" id="ingrediente-id" />
+							<div class="mb-3">
+								<label class="form-label">Nome do Ingrediente</label>
+								<input
+									type="text"
+									class="form-control"
+									id="nome"
+									placeholder="Ex: Tomate"
+									required
+								/>
+							</div>
+
+							<div class="row">
+								<div class="col-6 mb-3">
+									<label class="form-label">Quantidade</label>
+									<input
+										type="number"
+										step="0.1"
+										class="form-control"
+										id="quantidade"
+										placeholder="0"
+										required
+									/>
+								</div>
+								<div class="col-6 mb-3">
+									<label class="form-label">Unidade</label>
+									<select class="form-select" id="unidade" required>
+										<option value="kg">kg (Quilogramas)</option>
+										<option value="g">g (Gramas)</option>
+										<option value="l">l (Litros)</option>
+										<option value="ml">ml (Mililitros)</option>
+										<option value="un">un (Unidades)</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="d-grid">
+								<button type="submit" class="btn btn-dark fw-bold">
+									Salvar
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
