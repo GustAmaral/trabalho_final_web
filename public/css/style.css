@@ -174,3 +174,31 @@ footer {
     box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
     opacity: 0.95;
 }
+
+.rounded-4 {
+    border-radius: 1rem !important; /* Arredondamento maior estilo 'rounded-2xl' */
+}
+
+/* Botões da Admin Action */
+.btn-admin-action {
+    transition: transform 0.2s, background-color 0.2s;
+    border: 1px solid transparent;
+}
+
+.btn-admin-action:hover {
+    transform: translateY(-2px);
+    background-color: #1a252f; /* Dark um pouco mais claro */
+}
+
+/* Card da Equipe */
+.team-card {
+    transition: box-shadow 0.2s;
+}
+.team-card:hover {
+    box_shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+}
+
+/* Tipografia pequena */
+.x-small {
+    font-size: 0.75rem;
+}

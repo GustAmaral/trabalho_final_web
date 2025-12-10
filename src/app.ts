@@ -7,6 +7,7 @@ import { ingredienteRoutes } from './routes/ingredienteRoutes';
 import { produtoRoutes } from './routes/produtoRoutes';
 import { pedidoRoutes } from './routes/pedidoRoutes';
 import { authRoutes } from './routes/authRoutes';
+import { usuarioRoutes } from './routes/usuarioRoutes';
  
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // Rotas
 app.use('/api/auth', authRoutes);
+app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/ingredientes', ingredienteRoutes);
 app.use('/api/produtos', produtoRoutes);
 app.use('/api/pedidos', pedidoRoutes);

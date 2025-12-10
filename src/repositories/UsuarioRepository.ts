@@ -15,4 +15,9 @@ export class UsuarioRepository {
         const db = await getDatabaseConnection();
         return db.get<Usuario>('SELECT * FROM usuarios WHERE email = ?', [email]);
     }
+
+    async findAll(): Promise<Usuario[]> {
+        const db = await getDatabaseConnection();
+        return db.all<Usuario[]>('SELECT id, nome, email, cargo FROM usuarios');
+    }
 }
