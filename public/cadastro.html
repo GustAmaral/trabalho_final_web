@@ -3,16 +3,16 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Login - GastroFlow</title>
+		<title>Crie sua Conta - GastroFlow</title>
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/style.css" />
 		<script src="js/bootstrap.bundle.min.js"></script>
-		<script src="js/login.js" defer></script>
+		<script src="js/cadastro.js" defer></script>
 	</head>
 	<body class="bg-light d-flex align-items-center min-vh-100">
 		<div class="container">
 			<div class="row justify-content-center">
-				<div class="col-md-5 col-lg-4">
+				<div class="col-md-6 col-lg-5">
 					<div class="text-center mb-4">
 						<h3 class="fw-bold" style="color: var(--secondary-color)">
 							GastroFlow
@@ -21,22 +21,50 @@
 
 					<div class="card border-0 shadow-sm p-3">
 						<div class="card-body">
-							<h4 class="card-title text-center mb-4 fw-bold">
-								Faça Login para continuar
+							<h4
+								class="card-title text-center mb-4 fw-bold"
+								style="color: var(--secondary-color)"
+							>
+								Crie sua Conta
 							</h4>
 
-							<form id="form-login">
+							<form id="form-cadastro">
+								<div class="mb-3">
+									<label for="nome" class="form-label text-muted"
+										>Nome Completo</label
+									>
+									<input
+										type="text"
+										class="form-control"
+										id="nome"
+										placeholder="Ex: Fulano de Tal"
+										required
+									/>
+								</div>
+
 								<div class="mb-3">
 									<label for="email" class="form-label text-muted"
-										>Usuário (E-mail)</label
+										>E-mail</label
 									>
 									<input
 										type="email"
 										class="form-control"
 										id="email"
-										placeholder="ex: admin@gastroflow.com"
+										placeholder="ex: chef@gastroflow.com"
 										required
 									/>
+								</div>
+
+								<div class="mb-3">
+									<label for="cargo" class="form-label text-muted"
+										>Tipo de Conta</label
+									>
+									<select class="form-select" id="cargo">
+										<option value="cozinheiro">
+											Cozinheiro (Acesso à Cozinha)
+										</option>
+										<option value="admin">Gerente (Acesso Total)</option>
+									</select>
 								</div>
 
 								<div class="mb-3">
@@ -50,10 +78,17 @@
 									/>
 								</div>
 
-								<div class="mb-3 text-end">
-									<a href="#" class="text-decoration-none small"
-										>Esqueci Minha Senha</a
+								<div class="mb-4">
+									<label for="confirmar-senha" class="form-label text-muted"
+										>Confirmar Senha</label
 									>
+									<input
+										type="password"
+										class="form-control"
+										id="confirmar-senha"
+										placeholder="********"
+										required
+									/>
 								</div>
 
 								<div class="d-grid gap-2">
@@ -62,27 +97,27 @@
 										class="btn text-white fw-bold"
 										style="background-color: var(--secondary-color)"
 									>
-										Entrar
+										Cadastrar
 									</button>
 								</div>
 							</form>
 
 							<div class="text-center mt-4">
 								<p class="small text-muted">
-									Não tem uma conta?
-									<a href="cadastro.html" class="text-decoration-none">Cadastre-se</a>
+									Já tem uma conta?
+									<a href="login.html" class="text-primary-gastro"
+										>Faça login</a
+									>
 								</p>
 							</div>
 						</div>
 					</div>
 
 					<div
-						id="alerta-erro"
-						class="alert alert-danger mt-3 d-none text-center"
+						id="alerta-msg"
+						class="alert d-none mt-3 text-center shadow-sm"
 						role="alert"
-					>
-						Usuário ou senha inválidos.
-					</div>
+					></div>
 				</div>
 			</div>
 		</div>
