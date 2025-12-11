@@ -15,7 +15,7 @@ export const initializeDatabase = async () => {
 
 	console.log("🏗️  Verificando estrutura do banco de dados...");
 
-	// 1. Tabela PRODUTOS_MENU (Cardápio)
+	// 1. Tabela PRODUTOS_MENU 
 	await db.exec(`
         CREATE TABLE IF NOT EXISTS produtos_menu (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,7 +37,7 @@ export const initializeDatabase = async () => {
         )
     `);
 
-	// 3. Tabela de Relacionamento PRODUTO <-> INGREDIENTE (N:N)
+	// 3. Tabela de Relacionamento PRODUTO - INGREDIENTE (N:N)
 	await db.exec(`
         CREATE TABLE IF NOT EXISTS produto_ingredientes (
             produto_id INTEGER,

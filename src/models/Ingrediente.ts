@@ -1,5 +1,5 @@
 export interface Ingrediente {
-    id?: number; // Opcional na criação, pois o banco gera
+    id?: number; 
     nome: string;
     unidade_medida: string;
     quantidade: number;

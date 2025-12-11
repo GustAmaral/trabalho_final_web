@@ -60,7 +60,7 @@ export class AuthController {
             { expiresIn: '1d' } // Expira em 1 dia
         );
 
-        // Retorna infos úteis para o frontend (mas SEM a senha)
+        // Retorna infos úteis para o frontend 
         return res.json({
             usuario: {
                 id: usuario.id,

@@ -6,12 +6,12 @@ export class PedidoRepository {
 	async findAll(): Promise<Pedido[]> {
 		const db = await getDatabaseConnection();
 
-		// 1. Busca todos os pedidos (cabeçalhos)
+		// 1. Busca todos os pedidos 
 		const pedidos = await db.all<Pedido[]>(
 			"SELECT * FROM pedidos ORDER BY data_hora_criacao DESC"
 		);
 
-		// 2. Para cada pedido, busca seus itens (Isso é necessário para montar o Card do Kanban)
+		// 2. Para cada pedido, busca seus itens 
 		for (const pedido of pedidos) {
 			const itens = await db.all<ItemPedido[]>(
 				`
@@ -32,7 +32,7 @@ export class PedidoRepository {
 		return pedidos;
 	}
 
-	// Criar Pedido (Usa Transação para garantir integridade)
+	// Criar Pedido 
 	async create(pedido: Pedido): Promise<void> {
 		const db = await getDatabaseConnection();
 
@@ -83,7 +83,7 @@ export class PedidoRepository {
 				[novoStatus, id]
 			);
 		} else {
-			// Se for apenas mover (ex: Recebido -> Em Preparo), limpa a finalização (caso tenha voltado)
+			// Se for apenas mover, limpa a finalização 
 			await db.run(
 				`UPDATE pedidos 
                  SET status = ?, data_hora_finalizacao = NULL 

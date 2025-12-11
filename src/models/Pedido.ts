@@ -2,7 +2,7 @@
 export interface ItemPedido {
     produto_id: number;
     quantidade: number;
-    nome_produto?: string; // Opcional, usado apenas na leitura para exibir no Kanban
+    nome_produto?: string; 
 }
 
 // Interface principal do Pedido

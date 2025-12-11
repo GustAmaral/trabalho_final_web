@@ -43,6 +43,6 @@ export class IngredienteController {
 		const { id } = req.params;
 
 		await repository.delete(Number(id));
-		return res.status(204).send(); // 204 = No Content (Sucesso sem corpo)
+		return res.status(204).send(); // 204 = No Content 
 	}
 }
