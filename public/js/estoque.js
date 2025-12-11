@@ -1,11 +1,36 @@
+/**
+ * ============================================================================
+ * NOME DO ARQUIVO: estoque.js
+ * PROJETO: Trabalho Final Web
+ * DESCRIÇÃO: Gerencia a página de Estoque (Ingredientes). Permite listar,
+ *            adicionar e editar a quantidade de ingredientes disponíveis.
+ * ============================================================================
+ */
+
+/**
+ * ============================================================================
+ * 1. INICIALIZAÇÃO
+ * ============================================================================
+ */
 document.addEventListener("DOMContentLoaded", () => {
+	// Carrega a lista de ingredientes ao iniciar
 	carregarIngredientes();
 
-	// Configura o formulário do Modal
+	// Configura o formulário do Modal de Edição/Criação
 	const form = document.getElementById("form-ingrediente");
 	form.addEventListener("submit", salvarIngrediente);
 });
 
+/**
+ * ============================================================================
+ * 2. CARREGAMENTO DE DADOS
+ * ============================================================================
+ */
+
+/**
+ * Busca todos os ingredientes na API e renderiza os cards.
+ * @async
+ */
 async function carregarIngredientes() {
 	const token = localStorage.getItem("token");
 	try {
@@ -19,13 +44,23 @@ async function carregarIngredientes() {
 	}
 }
 
+/**
+ * ============================================================================
+ * 3. RENDERIZAÇÃO
+ * ============================================================================
+ */
+
+/**
+ * Renderiza os cards de ingredientes no grid.
+ * @param {Array} ingredientes - Lista de ingredientes retornada da API.
+ */
 function renderizarCards(ingredientes) {
 	const grid = document.getElementById("grid-ingredientes");
 	grid.innerHTML = "";
 
 	ingredientes.forEach((ing) => {
 		const card = document.createElement("div");
-		// Grid responsivo: 1 col (mobile), 2 (sm), 4 (md), 5 (lg) - imitando o mockup
+		// Grid responsivo: 1 col (mobile), 2 (sm), 4 (md), 5 (lg)
 		card.className = "col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2";
 
 		card.innerHTML = `
@@ -50,7 +85,16 @@ function renderizarCards(ingredientes) {
 	});
 }
 
-// Prepara o modal para Criar (Limpa campos)
+/**
+ * ============================================================================
+ * 4. AÇÕES DO FORMULÁRIO (CRUD)
+ * ============================================================================
+ */
+
+/**
+ * Prepara o modal para cadastro de um novo ingrediente (limpa campos).
+ * Chamado pelo botão "Novo Ingrediente" no HTML.
+ */
 window.limparFormulario = () => {
 	document.getElementById("ingrediente-id").value = "";
 	document.getElementById("nome").value = "";
@@ -58,7 +102,10 @@ window.limparFormulario = () => {
 	document.getElementById("unidade").value = "kg";
 };
 
-// Prepara o modal para Editar (Preenche campos)
+/**
+ * Prepara o modal para edição de um ingrediente existente.
+ * @param {Object} ingrediente - Objeto do ingrediente a ser editado.
+ */
 window.abrirModalEdicao = (ingrediente) => {
 	document.getElementById("ingrediente-id").value = ingrediente.id;
 	document.getElementById("nome").value = ingrediente.nome;
@@ -66,6 +113,11 @@ window.abrirModalEdicao = (ingrediente) => {
 	document.getElementById("unidade").value = ingrediente.unidade_medida;
 };
 
+/**
+ * Salva (Cria ou Atualiza) um ingrediente.
+ * @param {Event} e - Evento de submit do formulário.
+ * @async
+ */
 async function salvarIngrediente(e) {
 	e.preventDefault();
 	const token = localStorage.getItem("token");
@@ -96,7 +148,7 @@ async function salvarIngrediente(e) {
 			const modalInstance = bootstrap.Modal.getInstance(modalEl);
 			modalInstance.hide();
 
-			// Recarrega a lista
+			// Recarrega a lista para mostrar os dados atualizados
 			carregarIngredientes();
 		} else {
 			alert("Erro ao salvar");

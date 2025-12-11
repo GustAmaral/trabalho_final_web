@@ -1,25 +1,50 @@
+/**
+ * ============================================================================
+ * NOME DO ARQUIVO: admin.js
+ * PROJETO: Trabalho Final Web
+ * DESCRIÇÃO: Script responsável pela lógica da página administrativa (Dashboard).
+ *            Gerencia o carregamento do histórico de pedidos concluídos e a
+ *            visualização da equipe de cozinha.
+ * ============================================================================
+ */
+
+/**
+ * ============================================================================
+ * 1. INICIALIZAÇÃO
+ * ============================================================================
+ * Executa as configurações iniciais assim que o DOM estiver completamente carregado.
+ */
 document.addEventListener("DOMContentLoaded", () => {
-	// 1. Configurações iniciais
+	// 1. Configurações iniciais (Logout, Nome do usuário)
 	configurarCabecalho();
 
-	// 2. Busca os dados reais do banco para o Histórico
+	// 2. Busca os dados reais do banco para o Histórico de Pedidos
 	carregarHistoricoReal();
 
-    // 3. Busca os dados reais do banco para a Equipe
+    // 3. Busca os dados reais do banco para a Equipe de Cozinha
 	carregarEquipeReal();
 });
 
+/**
+ * ============================================================================
+ * 2. CONFIGURAÇÃO DO CABEÇALHO
+ * ============================================================================
+ */
+
+/**
+ * Configura os elementos do cabeçalho, como botão de logout e exibição do nome do usuário.
+ */
 function configurarCabecalho() {
-	// Logout
+	// Configuração do botão de Logout
 	const btnLogout = document.getElementById("btn-logout");
 	if (btnLogout) {
 		btnLogout.addEventListener("click", () => {
-			localStorage.clear();
-			window.location.href = "index.html";
+			localStorage.clear(); // Limpa dados da sessão
+			window.location.href = "index.html"; // Redireciona para login
 		});
 	}
 
-	// Nome do Usuário
+	// Exibição do Nome do Usuário logado
 	const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
 	if (usuario.nome) {
 		const userDisplay = document.getElementById("user-name");
@@ -27,6 +52,16 @@ function configurarCabecalho() {
 	}
 }
 
+/**
+ * ============================================================================
+ * 3. HISTÓRICO DE PEDIDOS
+ * ============================================================================
+ */
+
+/**
+ * Busca os pedidos no backend e filtra apenas os concluídos ("Entregue") para exibir no histórico.
+ * @async
+ */
 async function carregarHistoricoReal() {
 	const container = document.getElementById("lista-historico");
 	const token = localStorage.getItem("token");
@@ -38,7 +73,7 @@ async function carregarHistoricoReal() {
 	}
 
 	try {
-		// Busca todos os pedidos
+		// Busca todos os pedidos na API
 		const response = await fetch("/api/pedidos", {
 			headers: { Authorization: `Bearer ${token}` },
 		});
@@ -56,6 +91,10 @@ async function carregarHistoricoReal() {
 	}
 }
 
+/**
+ * Renderiza a lista de pedidos concluídos no DOM.
+ * @param {Array} listaPedidos - Lista de objetos de pedidos filtrados.
+ */
 function renderizarHistorico(listaPedidos) {
 	const container = document.getElementById("lista-historico");
 	container.innerHTML = "";
@@ -67,15 +106,18 @@ function renderizarHistorico(listaPedidos) {
 	}
 
 	listaPedidos.forEach((order) => {
-		// Formata o resumo dos pratos
+		// Formata o resumo dos pratos para exibição
 		const resumoPratos = order.itens
 			.map((item) => `${item.quantidade}x ${item.nome_produto}`)
 			.join(", ");
+            
+        // Trunca o texto se for muito longo
 		const pratoDisplay =
 			resumoPratos.length > 35
 				? resumoPratos.substring(0, 35) + "..."
 				: resumoPratos;
 
+        // Define a hora de finalização ou criação
 		const dataRef = order.data_hora_finalizacao || order.data_hora_criacao;
 		const hora = dataRef
 			? new Date(dataRef).toLocaleTimeString("pt-BR", {
@@ -84,6 +126,7 @@ function renderizarHistorico(listaPedidos) {
 			  })
 			: "";
 
+        // Cria o HTML do card de histórico
 		const itemHtml = `
             <div class="bg-white p-3 rounded-3 shadow-sm border mb-2 flex-shrink-0"> <div class="d-flex justify-content-between align-items-start">
                     <p class="fw-bold mb-1 text-dark small">Pedido #${order.id}</p>
@@ -100,6 +143,16 @@ function renderizarHistorico(listaPedidos) {
 	});
 }
 
+/**
+ * ============================================================================
+ * 4. GESTÃO DA EQUIPE
+ * ============================================================================
+ */
+
+/**
+ * Busca a lista de usuários (cozinheiros) no backend.
+ * @async
+ */
 async function carregarEquipeReal() {
 	const container = document.getElementById("grid-equipe");
 	const token = localStorage.getItem("token");
@@ -125,6 +178,10 @@ async function carregarEquipeReal() {
 	}
 }
 
+/**
+ * Renderiza os cards dos membros da equipe no DOM.
+ * @param {Array} listaEquipe - Lista de objetos de usuários.
+ */
 function renderizarEquipe(listaEquipe) {
 	const container = document.getElementById("grid-equipe");
 	container.innerHTML = "";
@@ -136,7 +193,7 @@ function renderizarEquipe(listaEquipe) {
 	}
 
 	listaEquipe.forEach((member) => {
-		// Define um ícone ou cor aleatória para o avatar ficar dinâmico (opcional)
+		// Cria o HTML do card do membro da equipe
 		const cardHtml = `
             <div class="col-sm-6 col-md-4 col-xl-3">
                 <div class="bg-white rounded-4 shadow-sm p-4 d-flex flex-column align-items-center justify-content-center border text-center h-100 team-card">

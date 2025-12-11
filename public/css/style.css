@@ -1,76 +1,116 @@
-:root {
-	/* Cores principais da landing page */
-	--primary-color: #d35400;
-	--secondary-color: #2c3e50;
+/**
+ * ============================================================================
+ * NOME DO ARQUIVO: style.css
+ * PROJETO: Trabalho Final Web
+ * DESCRIÇÃO: Folha de estilos principal da aplicação. Contém definições de
+ *            variáveis, estilos globais, landing page, kanban e dashboard.
+ * ============================================================================
+ */
 
-	/* Azul (A preparar) */
+/**
+ * ============================================================================
+ * 1. VARIÁVEIS GLOBAIS (:root)
+ * ============================================================================
+ * Definição de paleta de cores e variáveis reutilizáveis em todo o sistema.
+ */
+:root {
+    /* --- Cores da Marca (Landing Page) --- */
+    --primary-color: #d35400;       /* Laranja principal */
+    --secondary-color: #2c3e50;     /* Azul escuro/Cinza */
+
+    /* --- Cores do Kanban (Cozinha) --- */
+    /* Estado: A Preparar (Azul) */
     --kanban-blue-bg: #e3f2fd;
     --kanban-blue-text: #0d6efd;
     
-    /* Verde (Pronto) */
+    /* Estado: Pronto (Verde) */
     --kanban-green-bg: #d1e7dd;
     --kanban-green-text: #0f5132;
     
-    /* Roxo (Concluído) */
+    /* Estado: Concluído (Roxo) */
     --kanban-purple-bg: #f3e5f5;
     --kanban-purple-text: #6f42c1;
     
-    /* Cinzas */
-    --text-primary: #343a40;
-    --text-secondary: #6c757d;
-    --bg-main: #f4f6f8; /* Fundo geral da página */
+    /* --- Cores Neutras e Tipografia --- */
+    --text-primary: #343a40;        /* Texto principal (quase preto) */
+    --text-secondary: #6c757d;      /* Texto secundário (cinza) */
+    --bg-main: #f4f6f8;             /* Fundo geral da página (cinza claro) */
 }
 
+/**
+ * ============================================================================
+ * 2. ESTILOS GLOBAIS (Base)
+ * ============================================================================
+ * Configurações básicas de fonte e fundo para o corpo da página.
+ */
 body {
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-	background-color: var(--bg-main) !important;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-main) !important;
 }
 
-/* --- Estilização da landing page --- */
+/**
+ * ============================================================================
+ * 3. LANDING PAGE
+ * ============================================================================
+ * Estilos específicos para a página inicial (index.html), incluindo navbar,
+ * hero section e rodapé.
+ */
+
+/* Navbar: Marca/Logo */
 .navbar-brand {
-	font-weight: bold;
+    font-weight: bold;
     color: var(--primary-color) !important;
 }
 
-/* Hero Section */
+/* Hero Section: Área de destaque principal com imagem de fundo */
 .hero-section {
-	background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-		url("https://images.unsplash.com/photo-1556910103-1c02745a30bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
-	background-size: cover;
-	background-position: center;
-	color: white;
-	padding: 100px 0;
-	text-align: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url("https://images.unsplash.com/photo-1556910103-1c02745a30bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 0;
+    text-align: center;
 }
 
+/* Botões de Chamada para Ação (CTA) */
 .btn-cta {
-	background-color: var(--primary-color);
-	color: white;
-	padding: 12px 30px;
-	font-weight: bold;
-	border: none;
-	transition: transform 0.2s;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 30px;
+    font-weight: bold;
+    border: none;
+    transition: transform 0.2s;
 }
 
 .btn-cta:hover {
-	background-color: #e67e22;
-	color: white;
-	transform: scale(1.05);
+    background-color: #e67e22; /* Laranja um pouco mais claro */
+    color: white;
+    transform: scale(1.05);
 }
 
+/* Ícones de Funcionalidades */
 .feature-icon {
-	font-size: 3rem;
-	color: var(--primary-color);
-	margin-bottom: 1rem;
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
 }
 
+/* Rodapé */
 footer {
-	background-color: var(--secondary-color);
-	color: white;
-	padding: 20px 0;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 20px 0;
 }
 
-/* --- Estilo dos Cards do Kanban --- */
+/**
+ * ============================================================================
+ * 4. KANBAN / COZINHA
+ * ============================================================================
+ * Estilos para o quadro de pedidos, cards, badges de status e listas de itens.
+ */
+
+/* --- Card do Pedido --- */
 .kanban-card {
     border: none;
     border-radius: 12px;
@@ -84,18 +124,21 @@ footer {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+/* Título do Card (Número da Mesa) */
 .card-mesa-title {
     font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-primary);
 }
 
+/* Metadados do Card (ID, Hora) */
 .card-meta-info {
     font-size: 0.85rem;
     color: var(--text-secondary);
 }
 
-/* Badges de Status (A barra colorida dentro do card) */
+/* --- Badges de Status --- */
+/* Estilo base para a barra colorida indicando o status */
 .status-badge {
     display: block;
     width: 100%;
@@ -108,23 +151,25 @@ footer {
     border: none;
 }
 
-/* Variações de cor dos badges */
+/* Variação: A Preparar */
 .badge-preparar {
     background-color: var(--kanban-blue-bg);
     color: var(--kanban-blue-text);
 }
 
+/* Variação: Pronto */
 .badge-pronto {
     background-color: var(--kanban-green-bg);
     color: var(--kanban-green-text);
 }
 
+/* Variação: Concluído */
 .badge-concluido {
     background-color: var(--kanban-purple-bg);
     color: var(--kanban-purple-text);
 }
 
-/* Lista de Itens */
+/* --- Lista de Itens do Pedido --- */
 .item-lista {
     font-size: 0.95rem;
     color: var(--text-primary);
@@ -141,7 +186,7 @@ footer {
     font-size: 0.85rem;
 }
 
-/* Cabeçalhos das Colunas (Pills com contador) */
+/* --- Cabeçalhos das Colunas --- */
 .coluna-header {
     display: flex;
     align-items: center;
@@ -155,6 +200,7 @@ footer {
     color: var(--text-primary);
 }
 
+/* Contador de pedidos na coluna */
 .coluna-counter {
     background-color: #e9ecef;
     color: var(--text-primary);
@@ -164,22 +210,26 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Dashboard Admin */
+/**
+ * ============================================================================
+ * 5. DASHBOARD ADMIN
+ * ============================================================================
+ * Estilos para o painel administrativo, botões de ação e cards de equipe.
+ */
+
+/* Botões Grandes do Dashboard */
 .btn-dashboard {
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
 }
+
 .btn-dashboard:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
     opacity: 0.95;
 }
 
-.rounded-4 {
-    border-radius: 1rem !important; /* Arredondamento maior estilo 'rounded-2xl' */
-}
-
-/* Botões da Admin Action */
+/* Botões de Ação Administrativa */
 .btn-admin-action {
     transition: transform 0.2s, background-color 0.2s;
     border: 1px solid transparent;
@@ -194,11 +244,24 @@ footer {
 .team-card {
     transition: box-shadow 0.2s;
 }
+
 .team-card:hover {
-    box_shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
 }
 
-/* Tipografia pequena */
+/**
+ * ============================================================================
+ * 6. UTILITÁRIOS
+ * ============================================================================
+ * Classes auxiliares de uso geral.
+ */
+
+/* Arredondamento maior (estilo 'rounded-2xl') */
+.rounded-4 {
+    border-radius: 1rem !important;
+}
+
+/* Tipografia extra pequena */
 .x-small {
     font-size: 0.75rem;
 }

@@ -1,3 +1,18 @@
+/**
+ * ============================================================================
+ * NOME DO ARQUIVO: cozinha.js
+ * PROJETO: Trabalho Final Web
+ * DESCRIÇÃO: Gerencia o Kanban da Cozinha. Exibe os pedidos em tempo real,
+ *            permite alterar o status (Recebido -> Preparo -> Pronto -> Entregue)
+ *            e calcula o tempo de espera.
+ * ============================================================================
+ */
+
+/**
+ * ============================================================================
+ * 1. INICIALIZAÇÃO
+ * ============================================================================
+ */
 document.addEventListener("DOMContentLoaded", () => {
 	// Configura o botão de sair
 	document.getElementById("btn-logout").addEventListener("click", () => {
@@ -14,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		).textContent = `Olá, ${usuarioLogado.nome}`;
 	}
 
-	// Se o cargo for 'admin', mostra o botão de voltar
+	// Se o cargo for 'admin', mostra o botão de voltar para o painel
 	if (usuarioLogado.cargo === "admin") {
 		const btnAdmin = document.getElementById("btn-voltar-admin");
 		if (btnAdmin) {
@@ -22,11 +37,21 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	}
 
-	// Inicia o ciclo de atualização
+	// Inicia o ciclo de atualização automática
 	carregarPedidos();
 	setInterval(carregarPedidos, 5000); // Atualiza a cada 5 segundos
 });
 
+/**
+ * ============================================================================
+ * 2. CARREGAMENTO DE PEDIDOS
+ * ============================================================================
+ */
+
+/**
+ * Busca os pedidos na API e atualiza o Kanban.
+ * @async
+ */
 async function carregarPedidos() {
 	const token = localStorage.getItem("token");
 	if (!token) return;
@@ -48,10 +73,18 @@ async function carregarPedidos() {
 	}
 }
 
+/**
+ * ============================================================================
+ * 3. RENDERIZAÇÃO DO KANBAN
+ * ============================================================================
+ */
+
+/**
+ * Distribui os pedidos nas colunas corretas do Kanban baseando-se no status.
+ * @param {Array} pedidos - Lista de pedidos.
+ */
 function renderizarKanban(pedidos) {
-	// Mapeamento das colunas do HTML (certifique-se que o HTML está atualizado com os IDs corretos)
-	// Se estiver usando o HTML antigo, os IDs podem ser diferentes.
-	// O ideal é usar o HTML atualizado que passei na resposta anterior.
+	// Mapeamento das colunas do HTML
 	const colunas = {
 		recebido: document.getElementById("coluna-recebido"), // Coluna 1: A preparar
 		pronto: document.getElementById("coluna-preparo"), // Coluna 2: Pronto
@@ -64,7 +97,7 @@ function renderizarKanban(pedidos) {
 		concluido: document.getElementById("count-pronto"),
 	};
 
-	// Limpa colunas
+	// Limpa colunas antes de renderizar
 	Object.values(colunas).forEach((col) => {
 		if (col) col.innerHTML = "";
 	});
@@ -92,18 +125,23 @@ function renderizarKanban(pedidos) {
 		}
 	});
 
-	// Atualiza os contadores
+	// Atualiza os contadores visuais
 	if (contadores.recebido) contadores.recebido.textContent = counts.recebido;
 	if (contadores.pronto) contadores.pronto.textContent = counts.pronto;
 	if (contadores.concluido) contadores.concluido.textContent = counts.concluido;
 }
 
+/**
+ * Cria o elemento HTML do card de um pedido.
+ * @param {Object} pedido - Dados do pedido.
+ * @returns {HTMLElement} O elemento div do card.
+ */
 function criarCardPedido(pedido) {
 	const cardDiv = document.createElement("div");
 	// Adiciona classes para estilização
 	cardDiv.className = "card kanban-card mb-3 p-3";
 
-	// 1. Definição de Estilos baseada no Status
+	// 1. Definição de Estilos e Textos baseada no Status
 	let badgeClass = "";
 	let badgeText = "";
 	let btnTexto = "";
@@ -131,7 +169,7 @@ function criarCardPedido(pedido) {
 		btnTexto = "";
 	}
 
-	// 2. Cálculo do Tempo
+	// 2. Cálculo do Tempo decorrido
 	const minutos = calcularTempo(pedido);
 
 	// 3. Montagem da Lista de Itens
@@ -152,8 +190,7 @@ function criarCardPedido(pedido) {
         </svg>
     `;
 
-	// 4. Montagem do HTML
-	// Usamos classes do Bootstrap (d-flex, align-items-center, gap-1) para imitar o Tailwind (flex, items-center, gap-1)
+	// 4. Montagem do HTML do Card
 	cardDiv.innerHTML = `
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex align-items-center">
@@ -191,6 +228,7 @@ function criarCardPedido(pedido) {
 				}
     `;
 
+    // Adiciona evento ao botão de ação (se existir)
 	const btn = cardDiv.querySelector(".btn-acao");
 	if (btn) {
 		btn.addEventListener("click", (e) => {
@@ -202,7 +240,17 @@ function criarCardPedido(pedido) {
 	return cardDiv;
 }
 
-// --- LÓGICA DE TEMPO CORRIGIDA ---
+/**
+ * ============================================================================
+ * 4. LÓGICA DE TEMPO E AÇÕES
+ * ============================================================================
+ */
+
+/**
+ * Calcula o tempo decorrido desde a criação do pedido em minutos.
+ * @param {Object} pedido - Objeto do pedido.
+ * @returns {number} Minutos decorridos.
+ */
 function calcularTempo(pedido) {
 	if (!pedido.data_hora_criacao) return 0;
 
@@ -226,6 +274,12 @@ function calcularTempo(pedido) {
 	return diffMins > 0 ? diffMins : 0;
 }
 
+/**
+ * Atualiza o status de um pedido na API.
+ * @param {number} id - ID do pedido.
+ * @param {string} novoStatus - Novo status a ser definido.
+ * @async
+ */
 async function atualizarStatusPedido(id, novoStatus) {
 	const token = localStorage.getItem("token");
 	try {
@@ -239,7 +293,7 @@ async function atualizarStatusPedido(id, novoStatus) {
 		});
 
 		if (response.ok) {
-			carregarPedidos();
+			carregarPedidos(); // Recarrega para atualizar a tela
 		} else {
 			alert("Erro ao atualizar status");
 		}

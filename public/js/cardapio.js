@@ -1,13 +1,38 @@
+/**
+ * ============================================================================
+ * NOME DO ARQUIVO: cardapio.js
+ * PROJETO: Trabalho Final Web
+ * DESCRIÇÃO: Gerencia a página de Cardápio (Produtos). Permite listar, criar,
+ *            editar e excluir pratos, além de vincular ingredientes a eles.
+ * ============================================================================
+ */
+
+/**
+ * ============================================================================
+ * 1. INICIALIZAÇÃO
+ * ============================================================================
+ */
 document.addEventListener("DOMContentLoaded", () => {
+	// Carrega a lista de produtos e os ingredientes para o modal de cadastro
 	carregarProdutos();
 	carregarIngredientesParaModal();
 
+	// Configura o envio do formulário de produto
 	document
 		.getElementById("form-produto")
 		.addEventListener("submit", salvarProduto);
 });
 
-// --- CARREGAMENTO ---
+/**
+ * ============================================================================
+ * 2. CARREGAMENTO DE DADOS
+ * ============================================================================
+ */
+
+/**
+ * Busca todos os produtos na API e renderiza na tela.
+ * @async
+ */
 async function carregarProdutos() {
 	const token = localStorage.getItem("token");
 	const res = await fetch("/api/produtos", {
@@ -17,6 +42,10 @@ async function carregarProdutos() {
 	renderizarGrid(produtos);
 }
 
+/**
+ * Busca os ingredientes disponíveis para preencher as opções no modal de produto.
+ * @async
+ */
 async function carregarIngredientesParaModal() {
 	const token = localStorage.getItem("token");
 	const res = await fetch("/api/ingredientes", {
@@ -25,6 +54,8 @@ async function carregarIngredientesParaModal() {
 	const ingredientes = await res.json();
 
 	const container = document.getElementById("lista-selecao-ingredientes");
+	
+    // Gera os checkboxes para cada ingrediente
 	container.innerHTML = ingredientes
 		.map(
 			(ing) => `
@@ -41,6 +72,16 @@ async function carregarIngredientesParaModal() {
 		.join("");
 }
 
+/**
+ * ============================================================================
+ * 3. RENDERIZAÇÃO
+ * ============================================================================
+ */
+
+/**
+ * Renderiza os cards de produtos no grid.
+ * @param {Array} produtos - Lista de produtos retornada da API.
+ */
 function renderizarGrid(produtos) {
 	const grid = document.getElementById("grid-produtos");
 	grid.innerHTML = "";
@@ -53,7 +94,7 @@ function renderizarGrid(produtos) {
 		const imgUrl =
 			prod.imagem || "https://cdn-icons-png.flaticon.com/512/706/706164.png";
 
-		// Lógica de Ingredientes (Lista)
+		// Monta a lista de ingredientes vinculados (HTML)
 		const listaIngredientes =
 			prod.ingredientes && prod.ingredientes.length > 0
 				? `<ul class="small text-muted mb-0 ps-3 mt-2">
@@ -61,6 +102,7 @@ function renderizarGrid(produtos) {
                </ul>`
 				: '<p class="small text-muted mt-2 fst-italic">Sem ingredientes vinculados</p>';
 
+        // HTML do Card do Produto
 		card.innerHTML = `
             <div class="card h-100 border-0 shadow-sm text-center p-3">
                 <div class="d-flex justify-content-center mt-2">
@@ -104,16 +146,29 @@ function renderizarGrid(produtos) {
 	});
 }
 
-// --- AÇÕES DO FORMULÁRIO ---
+/**
+ * ============================================================================
+ * 4. AÇÕES DO FORMULÁRIO (CRUD)
+ * ============================================================================
+ */
+
+/**
+ * Prepara o modal para cadastro de um novo produto (limpa campos).
+ * Chamado pelo botão "Novo Prato" no HTML.
+ */
 window.prepararNovoProduto = () => {
 	document.getElementById("prod-id").value = "";
 	document.getElementById("form-produto").reset();
-	// Limpa checkboxes
+	// Limpa checkboxes de ingredientes
 	document
 		.querySelectorAll("#lista-selecao-ingredientes input")
 		.forEach((c) => (c.checked = false));
 };
 
+/**
+ * Prepara o modal para edição de um produto existente.
+ * @param {Object} prod - Objeto do produto a ser editado.
+ */
 window.editarProduto = (prod) => {
 	document.getElementById("prod-id").value = prod.id;
 	document.getElementById("nome").value = prod.nome;
@@ -132,12 +187,17 @@ window.editarProduto = (prod) => {
 		});
 };
 
+/**
+ * Salva (Cria ou Atualiza) um produto.
+ * @param {Event} e - Evento de submit do formulário.
+ * @async
+ */
 async function salvarProduto(e) {
 	e.preventDefault();
 	const token = localStorage.getItem("token");
 	const id = document.getElementById("prod-id").value;
 
-	// Coleta IDs dos ingredientes marcados
+	// Coleta IDs dos ingredientes marcados no modal
 	const ingredientesIds = Array.from(
 		document.querySelectorAll("#lista-selecao-ingredientes input:checked")
 	).map((cb) => parseInt(cb.value));
@@ -170,6 +230,11 @@ async function salvarProduto(e) {
 	}
 }
 
+/**
+ * Exclui um produto.
+ * @param {number} id - ID do produto a ser excluído.
+ * @async
+ */
 window.deletarProduto = async (id) => {
 	if (!confirm("Tem certeza? Isso apagará o prato do cardápio.")) return;
 
