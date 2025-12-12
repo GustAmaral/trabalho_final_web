@@ -1,8 +1,22 @@
+/**
+ * ============================================================================
+ * NOME DO ARQUIVO: PedidoRepository.ts
+ * PROJETO: Trabalho Final Web
+ * DESCRIÇÃO: Repositório responsável pelo acesso a dados da tabela 'pedidos' e 'itens_pedido'.
+ *            Gerencia a criação, listagem e atualização de status dos pedidos.
+ * ============================================================================
+ */
+
 import { getDatabaseConnection } from "../config/database";
 import { Pedido, ItemPedido } from "../models/Pedido";
 
 export class PedidoRepository {
-	// Listar Pedidos (Com seus itens aninhados)
+	/**
+	 * Lista todos os pedidos, incluindo seus itens detalhados.
+	 * Realiza uma busca principal nos pedidos e sub-buscas para os itens.
+	 * 
+	 * @returns {Promise<Pedido[]>} Lista de pedidos com itens populados.
+	 */
 	async findAll(): Promise<Pedido[]> {
 		const db = await getDatabaseConnection();
 
@@ -32,7 +46,14 @@ export class PedidoRepository {
 		return pedidos;
 	}
 
-	// Criar Pedido 
+	/**
+	 * Cria um novo pedido e seus itens associados.
+	 * Utiliza transação para garantir integridade entre pedido e itens.
+	 * Registra o preço unitário do produto no momento da compra.
+	 * 
+	 * @param {Pedido} pedido - Objeto contendo dados do pedido e lista de itens.
+	 * @returns {Promise<void>}
+	 */
 	async create(pedido: Pedido): Promise<void> {
 		const db = await getDatabaseConnection();
 
@@ -70,7 +91,14 @@ export class PedidoRepository {
 		}
 	}
 
-	// Atualizar Status
+	/**
+	 * Atualiza o status de um pedido.
+	 * Se o status for 'Entregue', registra a data/hora de finalização.
+	 * 
+	 * @param {number} id - ID do pedido.
+	 * @param {string} novoStatus - Novo status a ser definido.
+	 * @returns {Promise<void>}
+	 */
 	async updateStatus(id: number, novoStatus: string): Promise<void> {
 		const db = await getDatabaseConnection();
 

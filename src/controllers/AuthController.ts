@@ -1,3 +1,12 @@
+/**
+ * ============================================================================
+ * NOME DO ARQUIVO: AuthController.ts
+ * PROJETO: Trabalho Final Web
+ * DESCRIÇÃO: Controlador responsável pela autenticação de usuários (login e registro).
+ *            Gerencia a criação de contas, verificação de credenciais e geração de tokens JWT.
+ * ============================================================================
+ */
+
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -7,7 +16,14 @@ const JWT_SECRET = 'meu_segredo_super_secreto';
 
 export class AuthController {
 
-    // Registrar novo usuário
+    /**
+     * Registra um novo usuário no sistema.
+     * Verifica se o e-mail já existe, criptografa a senha e salva o usuário.
+     * 
+     * @param {Request} req - Objeto de requisição do Express contendo os dados do usuário (nome, email, senha, cargo).
+     * @param {Response} res - Objeto de resposta do Express.
+     * @returns {Promise<Response>} Retorna uma resposta JSON com sucesso ou erro.
+     */
     async registrar(req: Request, res: Response) {
         const repository = new UsuarioRepository();
         const { nome, email, senha, cargo } = req.body;
@@ -35,7 +51,14 @@ export class AuthController {
         return res.status(201).json({ mensagem: 'Usuário criado com sucesso!' });
     }
 
-    // Fazer Login
+    /**
+     * Realiza o login do usuário.
+     * Verifica as credenciais (email e senha) e gera um token JWT se forem válidas.
+     * 
+     * @param {Request} req - Objeto de requisição do Express contendo email e senha.
+     * @param {Response} res - Objeto de resposta do Express.
+     * @returns {Promise<Response>} Retorna o token JWT e dados do usuário ou mensagem de erro.
+     */
     async login(req: Request, res: Response) {
         const repository = new UsuarioRepository();
         const { email, senha } = req.body;

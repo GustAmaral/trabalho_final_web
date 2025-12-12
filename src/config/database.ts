@@ -1,7 +1,22 @@
+/**
+ * ============================================================================
+ * NOME DO ARQUIVO: database.ts
+ * PROJETO: Trabalho Final Web
+ * DESCRIÇÃO: Configuração e inicialização do banco de dados SQLite.
+ *            Contém funções para abrir conexão e criar as tabelas necessárias
+ *            para o funcionamento do sistema (produtos, ingredientes, pedidos, usuários).
+ * ============================================================================
+ */
+
 import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
 
-// Função para abrir a conexão
+/**
+ * Abre uma conexão com o banco de dados SQLite.
+ * Utiliza o driver 'sqlite3' e o arquivo localizado em './db/database.db'.
+ * 
+ * @returns {Promise<Database>} Uma promessa que resolve com a instância do banco de dados.
+ */
 export const getDatabaseConnection = async (): Promise<Database> => {
 	return open({
 		filename: "./db/database.db",
@@ -9,13 +24,27 @@ export const getDatabaseConnection = async (): Promise<Database> => {
 	});
 };
 
-// Função para iniciar as tabelas
+/**
+ * Inicializa a estrutura do banco de dados.
+ * Cria as tabelas necessárias se elas não existirem:
+ * - produtos_menu: Itens do cardápio.
+ * - ingredientes: Estoque de ingredientes.
+ * - produto_ingredientes: Relacionamento N:N entre produtos e ingredientes.
+ * - pedidos: Registro de pedidos realizados.
+ * - itens_pedido: Itens contidos em cada pedido.
+ * - usuarios: Usuários do sistema (admin, cozinha, etc).
+ */
 export const initializeDatabase = async () => {
 	const db = await getDatabaseConnection();
 
 	console.log("🏗️  Verificando estrutura do banco de dados...");
 
-	// 1. Tabela PRODUTOS_MENU 
+	/**
+     * ============================================================================
+     * 1. TABELA PRODUTOS_MENU
+     * ============================================================================
+     * Tabela que armazena os produtos disponíveis no cardápio.
+     */
 	await db.exec(`
         CREATE TABLE IF NOT EXISTS produtos_menu (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +56,12 @@ export const initializeDatabase = async () => {
         )
     `);
 
-	// 2. Tabela INGREDIENTES
+	/**
+     * ============================================================================
+     * 2. TABELA INGREDIENTES
+     * ============================================================================
+     * Tabela para controle de estoque dos ingredientes.
+     */
 	await db.exec(`
         CREATE TABLE IF NOT EXISTS ingredientes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,7 +71,12 @@ export const initializeDatabase = async () => {
         )
     `);
 
-	// 3. Tabela de Relacionamento PRODUTO - INGREDIENTE (N:N)
+	/**
+     * ============================================================================
+     * 3. TABELA DE RELACIONAMENTO PRODUTO - INGREDIENTE (N:N)
+     * ============================================================================
+     * Tabela associativa que define quais ingredientes compõem um produto.
+     */
 	await db.exec(`
         CREATE TABLE IF NOT EXISTS produto_ingredientes (
             produto_id INTEGER,
@@ -48,7 +87,12 @@ export const initializeDatabase = async () => {
         )
     `);
 
-	// 4. Tabela PEDIDOS
+	/**
+     * ============================================================================
+     * 4. TABELA PEDIDOS
+     * ============================================================================
+     * Tabela que registra os pedidos feitos pelos clientes.
+     */
 	await db.exec(`
         CREATE TABLE IF NOT EXISTS pedidos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -60,7 +104,12 @@ export const initializeDatabase = async () => {
         )
     `);
 
-	// 5. Tabela ITENS_PEDIDO (O que tem no pedido)
+	/**
+     * ============================================================================
+     * 5. TABELA ITENS_PEDIDO
+     * ============================================================================
+     * Tabela que detalha os produtos contidos em cada pedido.
+     */
 	await db.exec(`
         CREATE TABLE IF NOT EXISTS itens_pedido (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,7 +122,12 @@ export const initializeDatabase = async () => {
         )
     `);
 
-	// 6. Tabela USUARIOS
+	/**
+     * ============================================================================
+     * 6. TABELA USUARIOS
+     * ============================================================================
+     * Tabela de usuários do sistema (administradores, cozinheiros, etc.).
+     */
 	await db.exec(`
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

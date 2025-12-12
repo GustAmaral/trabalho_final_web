@@ -1,8 +1,21 @@
+/**
+ * ============================================================================
+ * NOME DO ARQUIVO: ProdutoRepository.ts
+ * PROJETO: Trabalho Final Web
+ * DESCRIÇÃO: Repositório responsável pelo acesso a dados da tabela 'produtos_menu'.
+ *            Gerencia produtos e seus relacionamentos com ingredientes.
+ * ============================================================================
+ */
+
 import { getDatabaseConnection } from "../config/database";
 import { Produto } from "../models/Produto";
 
 export class ProdutoRepository {
-	// Listar Produtos com seus Ingredientes
+	/**
+	 * Lista todos os produtos do cardápio, incluindo seus ingredientes.
+	 * 
+	 * @returns {Promise<Produto[]>} Lista de produtos com ingredientes populados.
+	 */
 	async findAll(): Promise<Produto[]> {
 		const db = await getDatabaseConnection();
 
@@ -26,6 +39,13 @@ export class ProdutoRepository {
 		return produtos;
 	}
 
+	/**
+	 * Cria um novo produto e associa seus ingredientes.
+	 * Utiliza transação para garantir a consistência dos dados.
+	 * 
+	 * @param {Produto} produto - Objeto contendo dados do produto e IDs dos ingredientes.
+	 * @returns {Promise<void>}
+	 */
 	async create(produto: Produto): Promise<void> {
 		const db = await getDatabaseConnection();
 		try {
@@ -62,7 +82,14 @@ export class ProdutoRepository {
 		}
 	}
 
-	// Atualizar Produto Completo
+	/**
+	 * Atualiza um produto existente e seus relacionamentos com ingredientes.
+	 * Remove os vínculos antigos de ingredientes e cria novos.
+	 * 
+	 * @param {number} id - ID do produto.
+	 * @param {Produto} produto - Novos dados do produto.
+	 * @returns {Promise<void>}
+	 */
 	async update(id: number, produto: Produto): Promise<void> {
 		const db = await getDatabaseConnection();
 		try {
@@ -95,6 +122,12 @@ export class ProdutoRepository {
 		}
 	}
 
+	/**
+	 * Remove um produto do banco de dados.
+	 * 
+	 * @param {number} id - ID do produto a ser removido.
+	 * @returns {Promise<void>}
+	 */
 	async delete(id: number): Promise<void> {
 		const db = await getDatabaseConnection();
 		// O SQLite com Foreign Keys ativas deletaria em cascata, mas por segurança apagamos os vínculos

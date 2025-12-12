@@ -1,8 +1,24 @@
+/**
+ * ============================================================================
+ * NOME DO ARQUIVO: PedidoController.ts
+ * PROJETO: Trabalho Final Web
+ * DESCRIÇÃO: Controlador responsável pelo gerenciamento de pedidos.
+ *            Permite listar pedidos, criar novos pedidos e atualizar o status.
+ * ============================================================================
+ */
+
 import { Request, Response } from 'express';
 import { PedidoRepository } from '../repositories/PedidoRepository';
 
 export class PedidoController {
 
+    /**
+     * Lista todos os pedidos registrados no sistema.
+     * 
+     * @param {Request} req - Objeto de requisição.
+     * @param {Response} res - Objeto de resposta.
+     * @returns {Promise<Response>} Retorna lista de pedidos ou erro.
+     */
     async listar(req: Request, res: Response) {
         const repository = new PedidoRepository();
         try {
@@ -13,6 +29,14 @@ export class PedidoController {
         }
     }
 
+    /**
+     * Cria um novo pedido.
+     * Recebe o número da mesa, itens do pedido e observações.
+     * 
+     * @param {Request} req - Objeto de requisição contendo dados do pedido.
+     * @param {Response} res - Objeto de resposta.
+     * @returns {Promise<Response>} Retorna mensagem de sucesso ou erro.
+     */
     async criar(req: Request, res: Response) {
         const repository = new PedidoRepository();
         const { numero_mesa, itens, observacao } = req.body;
@@ -36,6 +60,14 @@ export class PedidoController {
         }
     }
 
+    /**
+     * Atualiza o status de um pedido.
+     * Status permitidos: 'Recebido', 'Em Preparo', 'Pronto', 'Entregue'.
+     * 
+     * @param {Request} req - Objeto de requisição contendo ID e novo status.
+     * @param {Response} res - Objeto de resposta.
+     * @returns {Promise<Response>} Retorna mensagem de sucesso ou erro.
+     */
     async atualizarStatus(req: Request, res: Response) {
         const repository = new PedidoRepository();
         const { id } = req.params;

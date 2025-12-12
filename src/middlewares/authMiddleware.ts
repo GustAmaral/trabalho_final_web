@@ -1,3 +1,13 @@
+/**
+ * ============================================================================
+ * NOME DO ARQUIVO: authMiddleware.ts
+ * PROJETO: Trabalho Final Web
+ * DESCRIÇÃO: Middleware de autenticação JWT.
+ *            Verifica a presença e validade do token JWT no header Authorization.
+ *            Se válido, anexa os dados do usuário (id, cargo) ao objeto Request.
+ * ============================================================================
+ */
+
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -10,6 +20,14 @@ interface TokenPayload {
     exp: number;
 }
 
+/**
+ * Middleware para verificar autenticação via Token JWT.
+ * 
+ * @param {Request} req - Objeto de requisição do Express.
+ * @param {Response} res - Objeto de resposta do Express.
+ * @param {NextFunction} next - Função para passar o controle para o próximo middleware.
+ * @returns {Response | void} Retorna erro 401 se falhar, ou chama next() se sucesso.
+ */
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
 
@@ -17,8 +35,6 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
         return res.status(401).json({ erro: 'Token não fornecido' });
     }
 
-    // O header vem como "Bearer eyJhbGciOi..."
-    // Precisamos separar a palavra "Bearer" do token em si
     const [, token] = authorization.split(' ');
 
     try {
